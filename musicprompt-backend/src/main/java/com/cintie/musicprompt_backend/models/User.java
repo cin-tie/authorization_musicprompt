@@ -26,5 +26,5 @@ public class User {
     private String password;
 
     @Column(nullable = false)
-    private String role = "USER_ROLE";
+    private String role = "USER";
 }

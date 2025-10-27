@@ -4,10 +4,12 @@ import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.stereotype.Service;
 
 import java.security.Key;
 import java.util.Date;
 
+@Service
 public class JwtService {
 
     private static final String SECRET = "YOUR_SUPER_SECRET_KEY_CHANGE_THIS_TO_256_BIT";
