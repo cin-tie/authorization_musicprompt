@@ -17,6 +17,15 @@ public class JwtService {
 
     private final Key key = Keys.hmacShaKeyFor(SECRET.getBytes());
 
+    public Date extractExpiration(String token) {
+        return Jwts.parserBuilder()
+                .setSigningKey(key)
+                .build()
+                .parseClaimsJws(token)
+                .getBody()
+                .getExpiration();
+    }
+
     public String generateToken(String username){
         return Jwts.builder()
                 .setSubject(username)
@@ -37,7 +46,7 @@ public class JwtService {
 
     public boolean isTokenValid(String token){
         try {
-            Jwts.parserBuilder().setSigningKey(key).build().parse(token);
+            Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
             return true;
         }
         catch (JwtException e){
