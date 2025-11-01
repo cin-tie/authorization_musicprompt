@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 import java.util.Map;
+
 @RestController
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
@@ -31,12 +32,12 @@ public class AuthController {
     private final TokenBlacklistService tokenBlacklistService;
 
     @PostMapping("/register")
-    public ResponseEntity<AuthResponse> register(@RequestBody @Validated RegisterRequest request){
-        if(userRepository.existsByEmail(request.email())){
-            return ResponseEntity.badRequest().body(new AuthResponse(null, "Email already exists"));
+    public ResponseEntity<AuthResponse> register(@RequestBody @Validated RegisterRequest request) {
+        if (userRepository.existsByEmail(request.email())) {
+            return ResponseEntity.badRequest().body(new AuthResponse(null, null, "Email already exists"));
         }
-        if(userRepository.existsByUsername(request.username())){
-            return ResponseEntity.badRequest().body(new AuthResponse(null, "Username already exists"));
+        if (userRepository.existsByUsername(request.username())) {
+            return ResponseEntity.badRequest().body(new AuthResponse(null, null, "Username already exists"));
         }
 
         User user = User.builder()
@@ -47,34 +48,35 @@ public class AuthController {
                 .build();
 
         userRepository.save(user);
-        return ResponseEntity.ok(new AuthResponse(null, "User registered successfully"));
+        return ResponseEntity.ok(new AuthResponse(null, null, "User registered successfully"));
     }
 
     @PostMapping("/login")
-    public ResponseEntity<AuthResponse> login(@RequestBody @Validated LoginRequest request){
+    public ResponseEntity<AuthResponse> login(@RequestBody @Validated LoginRequest request) {
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.username(), request.password()));
             String token = jwtService.generateToken(request.username());
-            return ResponseEntity.ok(new AuthResponse(token, "Login successful"));
+            String refreshToken = jwtService.generateRefreshToken(request.username());
+            return ResponseEntity.ok(new AuthResponse(token, refreshToken, "Login successful"));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new AuthResponse(null, "Invalid username or password"));
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new AuthResponse(null, null, "Invalid username or password"));
         }
 
     }
 
     @PostMapping("/logout")
-    public ResponseEntity<AuthResponse> logout(@RequestHeader("Authorization") String header){
-        if(header == null || !header.startsWith("Bearer ")){
-            return ResponseEntity.badRequest().body(new AuthResponse(null, "Invalid authorization header"));
+    public ResponseEntity<AuthResponse> logout(@RequestHeader("Authorization") String header) {
+        if (header == null || !header.startsWith("Bearer ")) {
+            return ResponseEntity.badRequest().body(new AuthResponse(null, null, "Invalid authorization header"));
         }
         String token = header.substring(7);
 
         Date expiration = jwtService.extractExpiration(token);
         long ttl = expiration.getTime() - System.currentTimeMillis();
 
-        if(ttl > 0){
+        if (ttl > 0) {
             tokenBlacklistService.blacklistToken(token, ttl);
         }
-        return ResponseEntity.ok(new AuthResponse(null, "Logout successful"));
+        return ResponseEntity.ok(new AuthResponse(null, null, "Logout successful"));
     }
 }

@@ -17,7 +17,7 @@ public record RegisterRequest(
         @NotBlank(message = "Password is required")
         @Size(min = 6, message = "Password must be at least 6 characters")
         @Pattern(
-                regexp = "^[a-zA-Z0-9!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>\\/?]*$",
+                regexp = "^[a-zA-Z0-9!@#$%^&*()_+\\-]*$",
                 message = "Password must contain only Latin letters, numbers and special characters"
         )
         String password
