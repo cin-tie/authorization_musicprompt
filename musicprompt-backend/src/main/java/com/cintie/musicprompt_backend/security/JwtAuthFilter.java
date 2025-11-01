@@ -29,22 +29,29 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         final String authHeader = request.getHeader("Authorization");
 
-        if(authHeader == null || !authHeader.startsWith("Bearer ")){
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             filterChain.doFilter(request, response);
             return;
         }
 
         String token = authHeader.substring(7);
-        if(blacklistService.isTokenBlacklisted(token)){
-            filterChain.doFilter(request, response);
+        if (blacklistService.isTokenBlacklisted(token)) {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.getWriter().write("Token is blacklisted");
+            return;
+        }
+
+        if(!jwtService.isTokenValid(token)){
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.getWriter().write("Invalid or expired token");
             return;
         }
 
         String username = jwtService.extractUsername(token);
-        if(username != null && SecurityContextHolder.getContext().getAuthentication() == null){
+        if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 
-            if(jwtService.isTokenValid(token)){
+            if (jwtService.isTokenValid(token)) {
                 UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
 
                 authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
