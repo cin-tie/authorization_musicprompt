@@ -3,6 +3,8 @@ version: '3.8'
 services:
   backend:
     build: ./musicprompt-backend
+    env_file:
+      - ./.env
     container_name: musicprompt-backend
     ports:
       - "8080:8080"
