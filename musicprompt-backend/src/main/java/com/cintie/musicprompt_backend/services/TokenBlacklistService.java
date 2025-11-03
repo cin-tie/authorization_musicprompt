@@ -1,4 +1,4 @@
-package com.cintie.musicprompt_backend.servicies;
+package com.cintie.musicprompt_backend.services;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.StringRedisTemplate;

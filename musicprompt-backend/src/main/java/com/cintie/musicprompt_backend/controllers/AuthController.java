@@ -5,11 +5,10 @@ import com.cintie.musicprompt_backend.dto.LoginRequest;
 import com.cintie.musicprompt_backend.dto.RegisterRequest;
 import com.cintie.musicprompt_backend.models.User;
 import com.cintie.musicprompt_backend.repositories.UserRepository;
-import com.cintie.musicprompt_backend.servicies.JwtService;
-import com.cintie.musicprompt_backend.servicies.TokenBlacklistService;
+import com.cintie.musicprompt_backend.services.JwtService;
+import com.cintie.musicprompt_backend.services.TokenBlacklistService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -18,7 +17,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api/auth")

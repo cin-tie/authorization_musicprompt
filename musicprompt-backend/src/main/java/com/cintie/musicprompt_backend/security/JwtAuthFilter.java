@@ -1,8 +1,8 @@
 package com.cintie.musicprompt_backend.security;
 
-import com.cintie.musicprompt_backend.servicies.CustomUserDetailsService;
-import com.cintie.musicprompt_backend.servicies.JwtService;
-import com.cintie.musicprompt_backend.servicies.TokenBlacklistService;
+import com.cintie.musicprompt_backend.services.CustomUserDetailsService;
+import com.cintie.musicprompt_backend.services.JwtService;
+import com.cintie.musicprompt_backend.services.TokenBlacklistService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

@@ -1,4 +1,4 @@
-package com.cintie.musicprompt_backend.servicies;
+package com.cintie.musicprompt_backend.services;
 
 import com.cintie.musicprompt_backend.models.User;
 import com.cintie.musicprompt_backend.repositories.UserRepository;
