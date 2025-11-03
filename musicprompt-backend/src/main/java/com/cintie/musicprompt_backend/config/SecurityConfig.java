@@ -1,7 +1,7 @@
 package com.cintie.musicprompt_backend.config;
 
 import com.cintie.musicprompt_backend.security.JwtAuthFilter;
-import com.cintie.musicprompt_backend.servicies.CustomUserDetailsService;
+import com.cintie.musicprompt_backend.services.CustomUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

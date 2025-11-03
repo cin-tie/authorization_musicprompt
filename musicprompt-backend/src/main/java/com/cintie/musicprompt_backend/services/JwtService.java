@@ -1,4 +1,4 @@
-package com.cintie.musicprompt_backend.servicies;
+package com.cintie.musicprompt_backend.services;
 
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
